@@ -3,7 +3,7 @@ const fs = require('fs');
 const path = require('path');
 
 // Origen: visual-diff/{type}/{flow}/*.png, *.html
-const visualDiffRoot = path.join(__dirname, '../visual-diff');
+const visualDiffRoot = path.join(__dirname, '../evidences/visual-diff');
 
 // Destino: carpeta de timestamp bajo allure-report/data/attachments/<timestamp> (por argumento)
 let timestampDir = process.argv[2];

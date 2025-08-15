@@ -1,8 +1,7 @@
 
 import { registerUser } from '../../support/task/RegisterUser';
 import { generateUser } from '../../support/utils/userGenerator';
-const { visualConfig } = require('../../support/visualConfig');
-const { VisualTestHelper } = require('../../support/utils/VisualTestHelper');
+const { visualConfig, VisualTestHelper } = require('../../../VisualTestingImplement/utils/visualTesting');
 
 describe('Registration Flow - Tablet', () => {
   it('Should register a new user - Tablet', () => {
