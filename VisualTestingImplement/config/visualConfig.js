@@ -11,14 +11,5 @@ export const visualConfig = {
     Mobile: { width: 375, height: 812 }
   },
 
-  IGNORE_AREAS: {
-    'Flow_TO_Exclude': {
-      Desktop: [
-        { x: 0, y: 0, width: 0, height: 0 }
-      ],
-      Tablet: [],
-      Mobile: []
-    },
-    
-  }
+  IGNORE_AREAS: {}
 };
