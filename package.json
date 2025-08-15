@@ -15,9 +15,9 @@
     "adm-zip": "^0.5.16"
   },
   "scripts": {
-    "allure:report-dir": "node scripts/allure-report-dir.js",
-    "allure:generate": "export ALLURE_DIR=$(npm run -s allure:report-dir) && allure generate allure-results --clean -o $ALLURE_DIR",
-    "allure:postprocess": "export ALLURE_DIR=$(npm run -s allure:report-dir) && node scripts/copy-visual-diffs-to-allure-attachments.js $ALLURE_DIR && node scripts/patch-allure-report-html.js $ALLURE_DIR",
+  "allure:report-dir": "node VisualTestingImplement/scripts/allure-report-dir.js",
+  "allure:generate": "export ALLURE_DIR=$(npm run -s allure:report-dir) && allure generate allure-results --clean -o $ALLURE_DIR",
+  "allure:postprocess": "export ALLURE_DIR=$(npm run -s allure:report-dir) && node VisualTestingImplement/scripts/copy-visual-diffs-to-allure-attachments.js $ALLURE_DIR && node VisualTestingImplement/scripts/patch-allure-report-html.js $ALLURE_DIR",
     "allure:full-report": "npm run allure:generate && npm run allure:postprocess"
   }
 }
