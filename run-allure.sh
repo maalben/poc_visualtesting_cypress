@@ -5,7 +5,7 @@
 echo "[run-allure.sh] Ejecutando visual tests para desktop, tablet y mobile en una sola corrida..."
 
 BASE_REPORT_DIR="allure-report"
-VISUAL_DIFF_DIR="cypress/visual-diff"
+VISUAL_DIFF_DIR="VisualTestingImplement/evidences/visual-diff"
 ALLURE_ATTACHMENTS_DIR="$BASE_REPORT_DIR/data/attachments"
 
 npx cypress run --env allure=true --browser chrome --spec "cypress/e2e/registration/desktop.cy.js,cypress/e2e/registration/tablet.cy.js,cypress/e2e/registration/mobile.cy.js"
@@ -14,9 +14,9 @@ echo "[run-allure.sh] Cypress finalizado, generando reporte Allure..."
 npx allure generate allure-results --clean -o "$BASE_REPORT_DIR"
 
 # Copiar screenshots y visual-baseline a allure-report después de generar el reporte
-SCREENSHOTS_DIR="cypress/screenshots"
-VISUAL_BASELINE_DIR="cypress/visual-baseline"
-ALLURE_SCREENSHOTS_DIR="$BASE_REPORT_DIR/screenshots"
+SCREENSHOTS_DIR="VisualTestingImplement/evidences/visual-actual"
+VISUAL_BASELINE_DIR="VisualTestingImplement/evidences/visual-baseline"
+ALLURE_SCREENSHOTS_DIR="$BASE_REPORT_DIR/visual-actual"
 ALLURE_BASELINE_DIR="$BASE_REPORT_DIR/visual-baseline"
 if [ -d "$SCREENSHOTS_DIR" ]; then
   echo "[run-allure.sh] Copiando $SCREENSHOTS_DIR a $ALLURE_SCREENSHOTS_DIR ..."
@@ -36,8 +36,7 @@ else
 fi
 
 VISUAL_DIFF_TARGET_DIR="$BASE_REPORT_DIR/visual-diff"
-# Copiar visual-diff directamente a allure-report/visual-diff
-node copy-visual-diff.js
+  # Copiar visual-diff directamente a allure-report/visual-diff (ya no se usa script externo)
 if [ -d "$VISUAL_DIFF_DIR" ] && [ "$(ls -A $VISUAL_DIFF_DIR)" ]; then
   echo "[run-allure.sh] Copiando $VISUAL_DIFF_DIR completo a $VISUAL_DIFF_TARGET_DIR ..."
   rm -rf "$VISUAL_DIFF_TARGET_DIR"
@@ -47,6 +46,8 @@ else
   echo "[run-allure.sh] $VISUAL_DIFF_DIR está vacío o no existe, omitiendo copia."
 fi
 
+echo "[run-allure.sh] Limpiando carpetas visual-diff y screenshots..."
+node VisualTestingImplement/scripts/cleanVisualDirsStandalone.js
 echo "[run-allure.sh] Reporte Allure generado y abriéndose..."
 trap 'killall java' EXIT
 npx allure open "$BASE_REPORT_DIR"

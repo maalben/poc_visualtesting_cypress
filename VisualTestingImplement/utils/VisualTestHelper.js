@@ -9,7 +9,7 @@ class VisualTestHelper {
   static captureAndCompare(flow, name, type) {
     cy.window().its('document.readyState').should('eq', 'complete');
     cy.scrollTo('top');
-    const { visualConfig } = require('../visualConfig');
+    const { visualConfig } = require('../config/visualConfig');
     const { width, height } = visualConfig.VIEWPORTS[type];
     cy.viewport(width, height);
     cy.document().then(doc => {
@@ -44,30 +44,29 @@ class VisualTestHelper {
         return cy.screenshot(`${name}`);
       })
       .then(() => {
-        return cy.task('moveScreenshot', { flow, type, name });
+  // Mover screenshot a la nueva ruta visual-actual
+  return cy.task('moveScreenshot', { flow, type, name, targetDir: 'visual-actual' });
       })
       .then(() => {
         return cy.wait(200);
       })
       .then(() => cy.task('updateBaseline', { flow, type, name }))
       .then((result) => {
+        const { execSync } = require('child_process');
+        const path = require('path');
+        const projectRoot = process.cwd();
+        const selfContainedHtmlPath = path.join(projectRoot, 'VisualTestingImplement', 'evidences', 'visual-diff', flow, type, `${name}-diff-selfcontained.html`);
+        // Si hay diferencias visuales
         if (!result.success) {
           // Generar HTML autosuficiente antes de adjuntar a Allure
-          const { execSync } = require('child_process');
-          const path = require('path');
-          const projectRoot = process.cwd();
-          const scriptPath = path.join(projectRoot, 'generateSelfContainedDiffHtml.js');
+          const scriptPath = path.join(projectRoot, 'VisualTestingImplement', 'scripts', 'generateSelfContainedDiffHtml.js');
           const flowSafe = flow.replace(/"/g, '');
           try {
             execSync(`node "${scriptPath}" "${flowSafe}" "${type}" "${name}"`, { stdio: 'inherit' });
           } catch (e) {
             console.error('Error generando HTML autosuficiente:', e);
           }
-          // Asegura que la ruta sea exactamente igual a la que genera el script
-          // Nuevo orden: cypress/visual-diff/flow/type/name-diff-selfcontained.html
-          const selfContainedHtmlPath = path.join(projectRoot, 'cypress', 'visual-diff', flow, type, `${name}-diff-selfcontained.html`);
           // Log explícito para depuración de ruta
-          // eslint-disable-next-line no-console
           console.log('[VisualTestHelper] Ruta esperada del HTML autosuficiente:', selfContainedHtmlPath);
           const errorMsg = `
             <b style='color:#d32f2f;font-size:1.2em;'>❌ Visual regression detected</b><br>
@@ -87,17 +86,35 @@ class VisualTestHelper {
             }
           });
           if (result.baselinePath) {
-            cy.allure().fileAttachment('Baseline', result.baselinePath, 'image/png');
+            cy.task('fileExists', result.baselinePath).then((exists) => {
+              if (exists) cy.allure().fileAttachment('Baseline', result.baselinePath, 'image/png');
+            });
           }
           if (result.screenshotPath) {
-            cy.allure().fileAttachment('Actual', result.screenshotPath, 'image/png');
+            cy.task('fileExists', result.screenshotPath).then((exists) => {
+              if (exists) cy.allure().fileAttachment('Actual', result.screenshotPath, 'image/png');
+            });
           }
           if (result.diffPath) {
-            cy.allure().fileAttachment('Diff', result.diffPath, 'image/png');
+            cy.task('fileExists', result.diffPath).then((exists) => {
+              if (exists) cy.allure().fileAttachment('Diff', result.diffPath, 'image/png');
+            });
           }
           cy.wait(200).then(() => {
             throw new Error(result.error || `Images do not match. See diff at: ${result.diffPath}`);
           });
+        } else {
+          // Caso exitoso: adjuntar screenshot y baseline si existen
+          if (result.baselinePath) {
+            cy.task('fileExists', result.baselinePath).then((exists) => {
+              if (exists) cy.allure().fileAttachment('Baseline', result.baselinePath, 'image/png');
+            });
+          }
+          if (result.screenshotPath) {
+            cy.task('fileExists', result.screenshotPath).then((exists) => {
+              if (exists) cy.allure().fileAttachment('Actual', result.screenshotPath, 'image/png');
+            });
+          }
         }
       });
   }

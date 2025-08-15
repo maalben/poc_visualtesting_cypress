@@ -1,8 +1,7 @@
 import { registerUser } from '../../support/task/RegisterUser';
 import { registrationShouldBeSuccessfulDesktopTablet } from '../../support/questions/RegistrationSuccessDesktopTablet';
 import { generateUser } from '../../support/utils/userGenerator';
-const { visualConfig } = require('../../support/visualConfig');
-const { VisualTestHelper } = require('../../support/utils/VisualTestHelper');
+const { visualConfig, VisualTestHelper } = require('../../../VisualTestingImplement/utils/visualTesting');
 
   const type = 'Desktop';
   const { width, height } = visualConfig.VIEWPORTS[type];

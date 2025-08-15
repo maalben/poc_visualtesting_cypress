@@ -1,7 +1,8 @@
 // Configuration for visual testing
 
 export const visualConfig = {
-  UPDATE_BASELINE_TOTAL: true,
+  UPDATE_BASELINE_TOTAL: false,
+  // Las imágenes actuales capturadas por la prueba se guardan en VisualTestingImplement/evidences/visual-actual/{type}/{flow}/
   // Ejemplo: [{ type: 'Desktop', flow: 'Home' }, { type: 'Tablet', flow: 'Option new customer' }]
   UPDATE_BASELINE_ONLY: [],
   VIEWPORTS: {

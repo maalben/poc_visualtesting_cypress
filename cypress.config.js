@@ -1,6 +1,6 @@
 
 const { defineConfig } = require("cypress");
-const visualTasks = require('./cypress/support/utils/visualTasks.js');
+const visualTasks = require('./VisualTestingImplement/utils/visualTasks.js');
 
 module.exports = defineConfig({
   e2e: {

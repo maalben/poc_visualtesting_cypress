@@ -22,9 +22,9 @@ if (!flow || !type || !name) {
 }
 
 const projectRoot = process.cwd();
-const actualPath = path.join(projectRoot, 'cypress', 'screenshots', `${type}.cy.js`, `${name}.png`);
-const baselinePath = path.join(projectRoot, 'cypress', 'visual-baseline', flow, type, `${name}.png`);
-const diffPath = path.join(projectRoot, 'cypress', 'visual-diff', flow, type, `${name}-diff.png`);
+const actualPath = path.join(projectRoot, 'VisualTestingImplement', 'evidences', 'visual-actual', type, flow, `${name}.png`);
+const baselinePath = path.join(projectRoot, 'VisualTestingImplement', 'evidences', 'visual-baseline', type, flow, `${name}.png`);
+const diffPath = path.join(projectRoot, 'VisualTestingImplement', 'evidences', 'visual-diff', type, flow, `${name}-diff.png`);
 
 const html = `
 <html>
@@ -56,6 +56,6 @@ const html = `
 </html>
 `;
 
-const outputHtml = path.join(projectRoot, 'cypress', 'visual-diff', flow, type, `${name}-diff-selfcontained.html`);
+const outputHtml = path.join(projectRoot, 'VisualTestingImplement', 'evidences', 'visual-diff', flow, type, `${name}-diff-selfcontained.html`);
 fs.writeFileSync(outputHtml, html);
 console.log('HTML autosuficiente generado en:', outputHtml);
