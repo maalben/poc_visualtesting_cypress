@@ -137,3 +137,15 @@ dist
 # Vite logs files
 vite.config.js.timestamp-*
 vite.config.ts.timestamp-*
+
+.DS_Store
+package-lock.json
+node_modules
+allure-report
+allure-results
+cypress/visual-diff/*
+cypress/visual-baseline/*
+cypress/screenshots/e2e/*
+cypress/screenshots/desktop.cy.js/*
+cypress/screenshots/tablet.cy.js/*
+cypress/screenshots/mobile.cy.js/*

@@ -1,0 +1,23 @@
+{
+  "name": "cypress-automation-registration",
+  "version": "1.0.0",
+  "devDependencies": {
+    "@faker-js/faker": "^8.0.1",
+    "@shelex/cypress-allure-plugin": "^2.41.2",
+    "allure-commandline": "^2.34.1",
+    "allure-mocha": "^3.3.2",
+    "cypress": "^13.17.0",
+    "glob": "^11.0.3",
+    "pixelmatch": "^5.3.0",
+    "pngjs": "^7.0.0"
+  },
+  "dependencies": {
+    "adm-zip": "^0.5.16"
+  },
+  "scripts": {
+    "allure:report-dir": "node scripts/allure-report-dir.js",
+    "allure:generate": "export ALLURE_DIR=$(npm run -s allure:report-dir) && allure generate allure-results --clean -o $ALLURE_DIR",
+    "allure:postprocess": "export ALLURE_DIR=$(npm run -s allure:report-dir) && node scripts/copy-visual-diffs-to-allure-attachments.js $ALLURE_DIR && node scripts/patch-allure-report-html.js $ALLURE_DIR",
+    "allure:full-report": "npm run allure:generate && npm run allure:postprocess"
+  }
+}
