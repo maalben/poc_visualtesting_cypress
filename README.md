@@ -16,9 +16,6 @@ Este proyecto implementa pruebas automatizadas de regresión visual para flujos 
 
 ---
 
-scripts/
-generateSelfContainedDiffHtml.js
-
 ## Estructura relevante del proyecto
 
 ```
