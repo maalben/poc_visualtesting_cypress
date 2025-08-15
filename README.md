@@ -94,7 +94,7 @@ En `cypress/support/visualConfig.js`:
 
 ---
 
-## Ejemplo de configuración para actualización selectiva
+## Ejemplo de configuración para actualización selectiva y áreas a ignorar
 
 ```js
 export const visualConfig = {
@@ -104,9 +104,44 @@ export const visualConfig = {
     { type: 'Tablet', flow: 'Option new customer' }
   ],
   VIEWPORTS: { /* ... */ },
-  IGNORE_AREAS: { /* ... */ }
+  IGNORE_AREAS: {
+    'Flujo_a_ignorar': { //Flujo que se pretende ignorar
+      Desktop: [
+        { x: 350, y: 6, width: 260, height: 60 } // Ignora área superior
+      ],
+      Tablet: [
+        { x: 327, y: 243, width: 159, height: 153 } // Ignora área central
+      ],
+      Mobile: [] // No se ignora ninguna área en mobile
+    },
+    // Puedes agregar más flujos y tipos aquí
+  }
 };
 ```
+
+- Cada entrada en `IGNORE_AREAS` corresponde a un flujo.
+- Para cada tipo de dispositivo puedes definir una lista de áreas (rectángulos) a ignorar en la comparación visual.
+- Útil para zonas dinámicas, banners, o elementos que cambian frecuentemente y no deben causar fallos visuales.
+
+---
+
+## Ejemplo de configuración de VIEWPORTS
+
+```js
+export const visualConfig = {
+  // ...otras variables...
+  VIEWPORTS: {
+    Desktop: { width: 1280, height: 800 },
+    Tablet:  { width: 768,  height: 1024 },
+    Mobile:  { width: 375,  height: 812 }
+  },
+  // ...otras variables...
+};
+```
+
+- Cada tipo de dispositivo tiene un tamaño de viewport definido por `width` y `height`.
+- Los tests visuales usan estos valores para ajustar la resolución antes de capturar screenshots y comparar imágenes.
+- Puedes modificar los valores para adaptarlos a tus necesidades o agregar nuevos tipos si lo requieres.
 
 ---
 
