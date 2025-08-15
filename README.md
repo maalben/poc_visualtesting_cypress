@@ -1,0 +1,1 @@
+# poc_visualtesting_cypress
