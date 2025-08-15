@@ -16,35 +16,43 @@ Este proyecto implementa pruebas automatizadas de regresión visual para flujos 
 
 ---
 
+scripts/
+generateSelfContainedDiffHtml.js
+
 ## Estructura relevante del proyecto
 
 ```
+VisualTestingImplement/
+  evidences/
+    visual-actual/
+    visual-baseline/
+    visual-diff/
+  config/
+    visualConfig.js
+  utils/
+    visualTesting.js   # Centraliza imports de visualConfig y VisualTestHelper
+    VisualTestHelper.js
+    visualTasks.js
+  scripts/
+    copy-visual-diffs-to-allure-attachments.js
+    patch-allure-report-html.js
+    allure-report-dir.js
+    generateSelfContainedDiffHtml.js
+    cleanVisualDirsStandalone.js
 cypress/
   e2e/
     registration/
       desktop.cy.js
       tablet.cy.js
       mobile.cy.js
-  support/
-    utils/
-      VisualTestHelper.js
-      visualTasks.js
-    visualConfig.js
-  screenshots/
-  visual-baseline/
-  visual-diff/
-scripts/
-  copy-visual-diffs-to-allure-attachments.js
-  patch-allure-report-html.js
-  allure-report-dir.js
-generateSelfContainedDiffHtml.js
 ```
 
 ---
 
 ## Variables de configuración para línea base
 
-En `cypress/support/visualConfig.js`:
+
+En `VisualTestingImplement/config/visualConfig.js`:
 
 - `UPDATE_BASELINE_TOTAL`:  
   Si está en `true`, actualiza **todas** las líneas base en cada ejecución.
@@ -77,11 +85,15 @@ En `cypress/support/visualConfig.js`:
 
 ---
 
+
 ## Scripts y automatización
 
+- Todos los scripts relevantes están en `VisualTestingImplement/scripts/`.
 - `copy-visual-diffs-to-allure-attachments.js`: Copia los diffs visuales y HTML autosuficiente a la carpeta de adjuntos de Allure.
 - `patch-allure-report-html.js`: Inserta enlaces a los diffs y adjuntos en el reporte HTML de Allure.
 - `generateSelfContainedDiffHtml.js`: Genera un HTML autosuficiente con las imágenes embebidas en base64 para visualización directa.
+- `allure-report-dir.js`: Calcula la ruta de salida del reporte Allure.
+- `cleanVisualDirsStandalone.js`: Limpia las carpetas de evidencias visuales.
 
 ---
 
@@ -145,6 +157,7 @@ export const visualConfig = {
 
 ---
 
+
 ## Ejecución de pruebas y generación de reporte
 
 ### 1. Ejecutar las pruebas Cypress
@@ -155,21 +168,15 @@ Puedes ejecutar los tests visuales con:
 npx cypress run
 ```
 
-O usando el script de shell integrado:
+O usando el script de shell integrado (si existe):
 
 ```bash
 ./run-allure.sh
 ```
 
-Este script automatiza todo el flujo:
-- Ejecuta los tests Cypress.
-- Copia los diffs visuales y HTML autosuficiente.
-- Parchea el reporte para mostrar los adjuntos visuales.
-- Abre el reporte generado en el navegador.
-
 ### 2. Generar el reporte Allure manualmente (alternativa)
 
-Si prefieres los comandos npm:
+Usa los scripts npm definidos en `package.json`:
 
 ```bash
 npm run allure:full-report
@@ -195,7 +202,7 @@ npm run allure:open
 
 ### 4. Actualizar línea base (opcional)
 
-- Para actualizar toda la línea base, pon `UPDATE_BASELINE_TOTAL: true` en `visualConfig.js` y repite los pasos.
+- Para actualizar toda la línea base, pon `UPDATE_BASELINE_TOTAL: true` en `VisualTestingImplement/config/visualConfig.js` y repite los pasos.
 - Para actualizar solo flujos específicos, usa `UPDATE_BASELINE_ONLY` y repite los pasos.
 
 ---
